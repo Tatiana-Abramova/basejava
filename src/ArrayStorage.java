@@ -1,11 +1,11 @@
 /** Array based storage for Resumes */
 public class ArrayStorage {
     Resume[] storage = new Resume[10000];
-    int size = 0;
+    int size;
 
     /** Clears all the stored resumes */
     void clear() {
-        for (int i = 0; i < size(); i++) {
+        for (int i = 0; i < size; i++) {
             storage[i] = null;
         }
         size = 0;
@@ -17,7 +17,7 @@ public class ArrayStorage {
      */
     void save(Resume r) {
         if (r != null && r.uuid != null) {
-            for (int i = 0; i < size(); i++) {
+            for (int i = 0; i < size; i++) {
                 if (storage[i] != null
                         && storage[i].uuid != null
                         && storage[i].uuid.equals(r.uuid)) {
@@ -26,8 +26,8 @@ public class ArrayStorage {
                 }
             }
 
-            if (size() < storage.length) {
-                storage[size()] = r;
+            if (size < storage.length) {
+                storage[size] = r;
                 size++;
             } else {
                 System.out.println("The array overflow has occurred");
@@ -41,7 +41,7 @@ public class ArrayStorage {
      */
     Resume get(String uuid) {
         if (uuid != null) {
-            for (int i = 0; i < size(); i++) {
+            for (int i = 0; i < size; i++) {
                 if (uuid.equals(storage[i].uuid)) {
                     return storage[i];
                 }
@@ -56,26 +56,22 @@ public class ArrayStorage {
      */
     void delete(String uuid) {
         if (uuid != null) {
-            int deletedIndex = -1;
-            for (int i = 0; i < size(); i++) {
+            for (int i = 0; i < size; i++) {
                 if (uuid.equals(storage[i].uuid)) {
-                    storage[i] = null;
-                    deletedIndex = i;
+                    storage[i] = storage[size - 1];
+                    storage[size - 1] = null;
                     break;
                 }
             }
-            if (deletedIndex >= 0 && size() - 1 - deletedIndex >= 0) {
-                System.arraycopy(storage, deletedIndex + 1, storage, deletedIndex, size() - 1 - deletedIndex);
-                storage[size() - 1] = null;
-                size--;
-            }
+            size--;
         }
+
     }
 
     /** @return array, contains only Resumes in storage (without null) */
     Resume[] getAll() {
-        Resume[] result = new Resume[size()];
-        System.arraycopy(storage, 0, result, 0, size());
+        Resume[] result = new Resume[size];
+        System.arraycopy(storage, 0, result, 0, size);
         return result;
     }
 
