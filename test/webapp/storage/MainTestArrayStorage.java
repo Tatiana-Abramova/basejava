@@ -75,17 +75,17 @@ public class MainTestArrayStorage {
 
     public void update() {
         System.out.println("Update " + r2.getUuid() + ":");
-        ARRAY_STORAGE.update(r2.getUuid(), "Someone");
+        ARRAY_STORAGE.update(r2);
         printAll();
         System.out.println();
 
         System.out.println("Update non-existent:");
-        ARRAY_STORAGE.update("dummy", "Someone");
+        ARRAY_STORAGE.update(new Resume("uuid5"));
         printAll();
         System.out.println();
 
         System.out.println("Update null:");
-        ARRAY_STORAGE.update(null, "Someone");
+        ARRAY_STORAGE.update(null);
         printAll();
         System.out.println();
 
@@ -105,7 +105,7 @@ public class MainTestArrayStorage {
     public void emptyStorage() {
         ARRAY_STORAGE.get(r1.getUuid());
         ARRAY_STORAGE.delete(r1.getUuid());
-        ARRAY_STORAGE.update(r1.getUuid(), "name");
+        ARRAY_STORAGE.update(r1);
         ARRAY_STORAGE.clear();
         printAll();
 
