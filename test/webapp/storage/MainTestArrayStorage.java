@@ -4,8 +4,8 @@ import webapp.model.Resume;
 
 /** Test for your ArrayStorage implementation */
 public class MainTestArrayStorage {
-    static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
-    //static final SortedArrayStorage ARRAY_STORAGE = new SortedArrayStorage();
+    //static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
+    static final SortedArrayStorage ARRAY_STORAGE = new SortedArrayStorage();
     Resume r1 = new Resume("uuid5");
     Resume r2 = new Resume("uuid6");
     Resume r3 = new Resume("uuid3");
