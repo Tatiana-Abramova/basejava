@@ -8,15 +8,18 @@ import java.util.Arrays;
 public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
-    protected void saveElement(Resume resume, int index) {
+    protected void saveElement(Resume resume) {
+        int index = getIndex(resume.getUuid());
         int indexToSave = -index - 1;
         System.arraycopy(storage, indexToSave, storage, indexToSave + 1, size - indexToSave);
         storage[indexToSave] = resume;
+        size++;
     }
 
     @Override
-    protected void deleteElement(int index) {
+    protected void deleteElement(int index, String uuid) {
         System.arraycopy(storage, index + 1, storage, index, size - index);
+        size--;
     }
 
     @Override
