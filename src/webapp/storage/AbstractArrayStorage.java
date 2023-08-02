@@ -1,6 +1,6 @@
 package webapp.storage;
 
-import webapp.exception.NotExistStorageException;
+import webapp.exception.StorageException;
 import webapp.model.Resume;
 
 import java.util.Arrays;
@@ -8,6 +8,7 @@ import java.util.Arrays;
 /** Array based storage for Resumes */
 public abstract class AbstractArrayStorage extends AbstractStorage {
 
+    protected static final int STORAGE_LIMIT = 10000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
 
     protected int size = 0;
@@ -23,29 +24,33 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public final Resume get(String uuid) {
-        int index = getIndex(uuid);
-        if (index >= 0) {
-            return storage[index];
-        }
-        throw new NotExistStorageException(uuid);
-    }
-
-    @Override
     public final void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
     @Override
-    protected boolean isElementExist(Resume resume) {
-        int index = getIndex(resume.getUuid());
-        return index >= 0
-                && storage[index].getUuid().equals(resume.getUuid());
+    protected boolean isExist(Object searchKey) {
+        return (Integer) searchKey >= 0;
     }
 
     @Override
-    protected void updateElement(int index, Resume resume) {
-        storage[index] = resume;
+    protected Resume getElement(Object searchKey) {
+        return storage[(Integer) searchKey];
+    }
+
+    @Override
+    protected void saveElement(Resume resume) {
+        if (size() >= STORAGE_LIMIT) {
+            throw new StorageException("The array overflow has occurred", resume.getUuid());
+        }
+        addElement(resume);
+    }
+
+    protected abstract void addElement(Resume resume);
+
+    @Override
+    protected void updateElement(Object searchKey, Resume resume) {
+        storage[(Integer) searchKey] = resume;
     }
 }

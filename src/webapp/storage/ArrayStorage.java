@@ -6,20 +6,20 @@ import webapp.model.Resume;
 public class ArrayStorage extends AbstractArrayStorage {
 
     @Override
-    protected void saveElement(Resume resume) {
+    protected void addElement(Resume resume) {
         storage[size] = resume;
         size++;
     }
 
     @Override
-    protected void deleteElement(int index, String uuid) {
-        storage[index] = storage[size - 1];
+    protected void deleteElement(Object searchKey, String uuid) {
+        storage[(Integer) searchKey] = storage[size - 1];
         storage[size - 1] = null;
         size--;
     }
 
     @Override
-    protected int getIndex(String uuid) {
+    protected Object getSearchKey(String uuid) {
         for (int i = 0; i < size; i++) {
             if (uuid.equals(storage[i].getUuid())) {
                 return i;

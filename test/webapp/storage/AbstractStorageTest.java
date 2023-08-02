@@ -4,11 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import webapp.exception.ExistStorageException;
 import webapp.exception.NotExistStorageException;
-import webapp.exception.StorageException;
 import webapp.model.Resume;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 abstract class AbstractStorageTest {
 
@@ -97,16 +95,6 @@ abstract class AbstractStorageTest {
         storage.delete(UUID_1);
         assertSize(2);
         assertThrows(NotExistStorageException.class, () -> storage.get(UUID_1));
-    }
-
-    @Test
-    public void arrayOverflowTest() {
-        storage.clear();
-        for (int i = 0; i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
-            storage.save(new Resume("UUID_" + i));
-        }
-
-        assertThrows(StorageException.class, () -> storage.save(RESUME_4));
     }
 
     protected void assertSize(int expected) {

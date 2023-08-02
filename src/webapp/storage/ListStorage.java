@@ -1,26 +1,18 @@
 package webapp.storage;
 
-import webapp.exception.NotExistStorageException;
 import webapp.model.Resume;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /** List based storage for Resumes */
 public class ListStorage extends AbstractStorage {
 
-    List<Resume> storage = new ArrayList<>();
+    private final List<Resume> storage = new ArrayList<>();
 
     @Override
     public final int size() {
         return storage.size();
-    }
-
-    @Override
-    public final Resume get(String uuid) {
-        return getElement(uuid)
-                .orElseThrow(() -> new NotExistStorageException(uuid));
     }
 
     @Override
@@ -34,13 +26,24 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected int getIndex(String uuid) {
-        return storage.indexOf(getElement(uuid).orElse(new Resume(uuid)));
+    protected Object getSearchKey(String uuid) {
+        for (int i = 0; i < storage.size(); i++) {
+            if (uuid.equals(storage.get(i).getUuid())) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
-    protected boolean isElementExist(Resume resume) {
-        return getElement(resume.getUuid()).isPresent();
+    protected boolean isExist(Object searchKey) {
+        int index = (Integer) searchKey;
+        return index != -1 && storage.get(index) != null;
+    }
+
+    @Override
+    protected Resume getElement(Object searchKey) {
+        return storage.get((Integer) searchKey);
     }
 
     @Override
@@ -49,19 +52,12 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void updateElement(int index, Resume resume) {
-        storage.set(index, resume);
+    protected void updateElement(Object searchKey, Resume resume) {
+        storage.set((Integer) searchKey, resume);
     }
 
     @Override
-    protected void deleteElement(int index, String uuid) {
-        storage.remove(index);
-    }
-
-    private Optional<Resume> getElement(String uuid) {
-        return storage
-                .stream()
-                .filter(resume -> uuid.equals(resume.getUuid()))
-                .findFirst();
+    protected void deleteElement(Object searchKey, String uuid) {
+        storage.remove(((Integer) searchKey).intValue());
     }
 }

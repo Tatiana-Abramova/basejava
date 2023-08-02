@@ -8,23 +8,24 @@ import java.util.Arrays;
 public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
-    protected void saveElement(Resume resume) {
-        int index = getIndex(resume.getUuid());
-        int indexToSave = -index - 1;
+    protected void addElement(Resume resume) {
+        Integer searchKey = (Integer) getSearchKey(resume.getUuid());
+        int indexToSave = -searchKey - 1;
         System.arraycopy(storage, indexToSave, storage, indexToSave + 1, size - indexToSave);
         storage[indexToSave] = resume;
         size++;
     }
 
     @Override
-    protected void deleteElement(int index, String uuid) {
+    protected void deleteElement(Object searchKey, String uuid) {
+        int index = (Integer) searchKey;
         System.arraycopy(storage, index + 1, storage, index, size - index);
         size--;
     }
 
     @Override
-    protected int getIndex(String uuid) {
-        Resume searchKey = new Resume(uuid);
-        return Arrays.binarySearch(storage, 0, size, searchKey);
+    protected Object getSearchKey(String uuid) {
+        Resume resume = new Resume(uuid);
+        return Arrays.binarySearch(storage, 0, size, resume);
     }
 }
