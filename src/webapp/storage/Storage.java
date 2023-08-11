@@ -2,6 +2,8 @@ package webapp.storage;
 
 import webapp.model.Resume;
 
+import java.util.List;
+
 /** Storage for Resumes */
 public interface Storage {
 
@@ -9,7 +11,7 @@ public interface Storage {
     int size();
 
     /** @return all arrays in storage */
-    Resume[] getAll();
+    List<Resume> getAllSorted();
 
     /**
      * @param uuid resume unique ID

@@ -6,7 +6,11 @@ import webapp.exception.ExistStorageException;
 import webapp.exception.NotExistStorageException;
 import webapp.model.Resume;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 abstract class AbstractStorageTest {
 
@@ -21,10 +25,10 @@ abstract class AbstractStorageTest {
     protected static final Resume RESUME_4;
 
     static {
-        RESUME_1 = new Resume(UUID_1);
-        RESUME_2 = new Resume(UUID_2);
-        RESUME_3 = new Resume(UUID_3);
-        RESUME_4 = new Resume(UUID_4);
+        RESUME_1 = new Resume(UUID_1, "test1 test1");
+        RESUME_2 = new Resume(UUID_2, "test2 test2");
+        RESUME_3 = new Resume(UUID_3, "test3 test3");
+        RESUME_4 = new Resume(UUID_4, "test4 test4");
     }
 
     protected final Storage storage;
@@ -49,52 +53,51 @@ abstract class AbstractStorageTest {
 
     @Test
     public void get() {
-        assertGet(RESUME_1);
-        assertGet(RESUME_2);
-        assertGet(RESUME_3);
-        assertThrows(NotExistStorageException.class, () -> storage.get(UUID_4));
+        assertAll("get",
+                () -> assertGet(RESUME_1),
+                () -> assertGet(RESUME_2),
+                () -> assertGet(RESUME_3),
+                () -> assertThrows(NotExistStorageException.class, () -> storage.get(UUID_4)));
     }
 
     @Test
-    public void getAll() {
-        Resume[] expected = new Resume[]{
-                RESUME_1,
-                RESUME_2,
-                RESUME_3};
-        assertArrayEquals(expected, storage.getAll());
+    public void getAllSorted() {
+        assertEquals(Arrays.asList(RESUME_1, RESUME_2, RESUME_3), storage.getAllSorted());
     }
 
     @Test
     public void clear() {
         storage.clear();
-        assertSize(0);
-        assertArrayEquals(new Resume[0], storage.getAll());
+        assertAll("clear",
+                () -> assertSize(0),
+                () -> assertEquals(new ArrayList<>(0), storage.getAllSorted()));
     }
 
     @Test
     public void save() {
         storage.save(RESUME_4);
-        assertGet(RESUME_4);
-        assertSize(4);
-
-        assertThrows(ExistStorageException.class, () -> storage.save(RESUME_1));
+        assertAll("save",
+                () -> assertGet(RESUME_4),
+                () -> assertSize(4),
+                () -> assertThrows(ExistStorageException.class, () -> storage.save(RESUME_1)));
     }
 
     @Test
     public void update() {
-        Resume newResume = new Resume(UUID_1);
+        Resume newResume = new Resume(UUID_1, "new test1");
         storage.update(newResume);
-        assertGet(newResume);
-        assertSize(3);
-
-        assertThrows(NotExistStorageException.class, () -> storage.update(RESUME_4));
+        assertAll("update",
+                () -> assertGet(newResume),
+                () -> assertSize(3),
+                () -> assertThrows(NotExistStorageException.class, () -> storage.update(RESUME_4)));
     }
 
     @Test
     public void delete() {
         storage.delete(UUID_1);
-        assertSize(2);
-        assertThrows(NotExistStorageException.class, () -> storage.get(UUID_1));
+        assertAll("delete",
+                () -> assertSize(2),
+                () -> assertThrows(NotExistStorageException.class, () -> storage.get(UUID_1)));
     }
 
     protected void assertSize(int expected) {

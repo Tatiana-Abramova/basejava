@@ -1,19 +1,30 @@
 package webapp.model;
 
-import java.util.UUID;
+import org.jetbrains.annotations.NotNull;
 
 /** Initial resume class */
-public class Resume implements Comparable<Resume>{
+public class Resume {
 
     /** Unique identifier */
     private final String uuid;
 
-    public Resume() {
-        this(UUID.randomUUID().toString());
+    private String fullName;
+
+    public Resume(@NotNull String uuid, String fullName) {
+        this.uuid = uuid;
+        this.fullName = fullName;
     }
 
-    public Resume(String uuid) {
-        this.uuid = uuid;
+    public String getUuid() {
+        return uuid;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     @Override
@@ -31,17 +42,8 @@ public class Resume implements Comparable<Resume>{
         return uuid.hashCode();
     }
 
-    public String getUuid() {
-        return uuid;
-    }
-
     @Override
     public String toString() {
         return uuid;
-    }
-
-    @Override
-    public int compareTo(Resume o) {
-        return uuid.compareTo(o.getUuid());
     }
 }

@@ -4,8 +4,16 @@ import webapp.exception.ExistStorageException;
 import webapp.exception.NotExistStorageException;
 import webapp.model.Resume;
 
+import java.util.Comparator;
+
 /** Storage for Resumes */
 public abstract class AbstractStorage implements Storage {
+
+    protected static final Comparator<Resume> RESUME_COMPARATOR =
+            Comparator
+                    .nullsLast(Comparator
+                            .comparing(Resume::getFullName, Comparator.nullsLast(Comparator.naturalOrder()))
+                            .thenComparing(Resume::getUuid, Comparator.nullsLast(Comparator.naturalOrder())));
 
     @Override
     public final Resume get(String uuid) {
