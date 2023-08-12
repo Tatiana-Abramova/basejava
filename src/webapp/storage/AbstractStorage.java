@@ -5,6 +5,8 @@ import webapp.exception.NotExistStorageException;
 import webapp.model.Resume;
 
 import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /** Storage for Resumes */
 public abstract class AbstractStorage implements Storage {
@@ -19,6 +21,14 @@ public abstract class AbstractStorage implements Storage {
     public final Resume get(String uuid) {
         Object searchKey = getExistingSearchKey(uuid);
         return getElement(searchKey);
+    }
+
+    @Override
+    public final List<Resume> getAllSorted() {
+        return doGetAll()
+                .stream()
+                .sorted(RESUME_COMPARATOR)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -57,6 +67,12 @@ public abstract class AbstractStorage implements Storage {
      * @return existence flag
      */
     protected abstract boolean isExist(Object searchKey);
+
+    /**
+     * Returns all elements (unsorted)
+     * @return elements
+     */
+    protected abstract List<Resume> doGetAll();
 
     /**
      * Returns an element found by a search key

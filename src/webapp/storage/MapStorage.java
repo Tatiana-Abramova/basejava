@@ -2,13 +2,13 @@ package webapp.storage;
 
 import webapp.model.Resume;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /** Map based storage for Resumes */
-public class MapFullNameStorage extends AbstractStorage {
+public class MapStorage extends AbstractStorage {
 
     private final Map<String, Resume> storage = new HashMap<>();
 
@@ -18,40 +18,28 @@ public class MapFullNameStorage extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> getAllSorted() {
-        return storage.values().stream().sorted(RESUME_COMPARATOR).collect(Collectors.toList());
-    }
-
-    @Override
     public void clear() {
         storage.clear();
     }
 
     @Override
     protected Object getSearchKey(String uuid) {
-        Resume resume = storage.get(uuid);
-        if (resume == null) {
-            return null;
-        } else {
-            return resume.getFullName();
-        }
+        return storage.get(uuid);
     }
 
     @Override
     protected boolean isExist(Object searchKey) {
-        return searchKey != null && storage
-                .entrySet()
-                .stream()
-                .anyMatch((entry) -> entry.getValue().getFullName().equals(searchKey));
+        return searchKey != null;
+    }
+
+    @Override
+    protected List<Resume> doGetAll() {
+        return new ArrayList<>(storage.values());
     }
 
     @Override
     protected Resume getElement(Object searchKey) {
-        return storage.values()
-                .stream()
-                .filter((r) -> r.getFullName().equals(searchKey))
-                .findAny()
-                .orElse(null);
+        return (Resume) searchKey;
     }
 
     @Override

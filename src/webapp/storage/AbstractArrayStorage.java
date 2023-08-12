@@ -20,11 +20,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public final List<Resume> getAllSorted() {
-        return List.of(Arrays.copyOfRange(storage, 0, size));
-    }
-
-    @Override
     public final void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
@@ -33,6 +28,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     @Override
     protected boolean isExist(Object searchKey) {
         return (Integer) searchKey >= 0;
+    }
+
+    @Override
+    protected List<Resume> doGetAll() {
+        return List.of(Arrays.copyOfRange(storage, 0, size));
     }
 
     @Override

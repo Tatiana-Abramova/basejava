@@ -4,7 +4,6 @@ import webapp.model.Resume;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /** List based storage for Resumes */
 public class ListStorage extends AbstractStorage {
@@ -14,11 +13,6 @@ public class ListStorage extends AbstractStorage {
     @Override
     public final int size() {
         return storage.size();
-    }
-
-    @Override
-    public final List<Resume> getAllSorted() {
-        return storage.stream().sorted(RESUME_COMPARATOR).collect(Collectors.toList());
     }
 
     @Override
@@ -45,6 +39,11 @@ public class ListStorage extends AbstractStorage {
     @Override
     protected Resume getElement(Object searchKey) {
         return storage.get((Integer) searchKey);
+    }
+
+    @Override
+    protected List<Resume> doGetAll() {
+        return storage;
     }
 
     @Override

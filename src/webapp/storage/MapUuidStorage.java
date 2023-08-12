@@ -2,10 +2,10 @@ package webapp.storage;
 
 import webapp.model.Resume;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /** Map based storage for Resumes */
 public class MapUuidStorage extends AbstractStorage {
@@ -15,11 +15,6 @@ public class MapUuidStorage extends AbstractStorage {
     @Override
     public int size() {
         return storage.size();
-    }
-
-    @Override
-    public List<Resume> getAllSorted() {
-        return storage.values().stream().sorted(RESUME_COMPARATOR).collect(Collectors.toList());
     }
 
     @Override
@@ -40,6 +35,11 @@ public class MapUuidStorage extends AbstractStorage {
     @Override
     protected Resume getElement(Object searchKey) {
         return storage.get((String) searchKey);
+    }
+
+    @Override
+    protected List<Resume> doGetAll() {
+        return new ArrayList<>(storage.values());
     }
 
     @Override
