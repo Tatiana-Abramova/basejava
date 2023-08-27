@@ -5,6 +5,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static webapp.utils.Utils.getLn;
+
 /** Initial resume class */
 public class Resume {
 
@@ -78,20 +80,20 @@ public class Resume {
 
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder(fullName + System.getProperty("line.separator"));
+        StringBuilder result = new StringBuilder(fullName + getLn());
 
         for (Map.Entry<ContactType, String> contact : contacts.entrySet()) {
             result
                     .append(contact.getKey().getTitle()).append(": ")
-                    .append(contact.getValue()).append(System.getProperty("line.separator"));
+                    .append(contact.getValue()).append(getLn());
         }
 
         result.append(System.getProperty("line.separator"));
 
         for (Map.Entry<SectionType, Section> section : sections.entrySet()) {
             result
-                    .append(section.getKey().getTitle()).append(System.getProperty("line.separator"))
-                    .append(section.getValue()).append(System.getProperty("line.separator"));
+                    .append(section.getKey().getTitle()).append(getLn())
+                    .append(section.getValue()).append(getLn());
         }
 
         return result.toString();

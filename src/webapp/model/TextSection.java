@@ -1,5 +1,7 @@
 package webapp.model;
 
+import static webapp.utils.Utils.getLn;
+
 /** Text section */
 public class TextSection extends Section {
     private final String text;
@@ -10,6 +12,6 @@ public class TextSection extends Section {
 
     @Override
     public String toString() {
-        return text + System.getProperty("line.separator");
+        return text + getLn();
     }
 }

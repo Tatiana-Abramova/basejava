@@ -1,5 +1,7 @@
 package webapp.model;
 
+import static webapp.utils.Utils.getLn;
+
 /** Experience or education record */
 public class Company {
     private String name;
@@ -17,9 +19,5 @@ public class Company {
         return name + " "
                 + website + getLn()
                 + period + getLn();
-    }
-
-    private String getLn() {
-        return System.getProperty("line.separator");
     }
 }

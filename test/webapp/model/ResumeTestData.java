@@ -48,7 +48,6 @@ public class ResumeTestData {
         Company company1 = new Company("Java Online Projects", "http://javaops.ru/",
                 new Period(
                         LocalDate.of(2013, 10, 1),
-                        LocalDate.now(),
                         "Автор проекта",
                         "Создание, организация и проведение Java онлайн проектов и стажировок."));
         companies.add(company1);

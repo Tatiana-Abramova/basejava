@@ -1,8 +1,12 @@
 package webapp.model;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+import static webapp.utils.Utils.getLn;
 
 public class Period {
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/yyyy");
     private LocalDate dateFrom;
     private LocalDate dateTo;
     private String header;
@@ -15,11 +19,20 @@ public class Period {
         this.description = description;
     }
 
+    public Period(LocalDate dateFrom, String header, String description) {
+        this.dateFrom = dateFrom;
+        this.dateTo = null;
+        this.header = header;
+        this.description = description;
+    }
+
     @Override
     public String toString() {
-        return dateFrom + " - "
-                + dateTo + " "
-                + header + System.getProperty("line.separator")
-                + description + System.getProperty("line.separator");
+        String formattedDateFrom = formatter.format(dateFrom);
+        String formattedDateTo = dateTo == null ? "Сейчас" : formatter.format(dateTo);
+        return formattedDateFrom + " - "
+                + formattedDateTo + " "
+                + header + getLn()
+                + description + getLn();
     }
 }

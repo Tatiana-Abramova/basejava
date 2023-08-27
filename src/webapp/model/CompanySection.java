@@ -3,6 +3,8 @@ package webapp.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import static webapp.utils.Utils.getLn;
+
 /** Section that contains experience or education records */
 public class CompanySection extends Section {
     private final List<Company> companies = new ArrayList<>();
@@ -17,7 +19,7 @@ public class CompanySection extends Section {
         for (Company company : companies) {
             result
                     .append(company)
-                    .append(System.getProperty("line.separator"));
+                    .append(getLn());
         }
         return result.toString();
     }
