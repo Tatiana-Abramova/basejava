@@ -2,13 +2,23 @@ package webapp.model;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /** Initial resume class */
 public class Resume {
 
     /** Unique identifier */
     private final String uuid;
 
+    /** Full employee name */
     private String fullName;
+
+    /** Employee contacts */
+    private final Map<ContactType, String> contacts = new LinkedHashMap<>();
+
+    /** Resume sections */
+    private final Map<SectionType, Section> sections = new LinkedHashMap<>();
 
     public Resume(@NotNull String uuid, String fullName) {
         this.uuid = uuid;
@@ -25,6 +35,30 @@ public class Resume {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public String getContact(ContactType contactType) {
+        return contacts.get(contactType);
+    }
+
+    public void setContact(ContactType type, String contact) {
+        contacts.put(type, contact);
+    }
+
+    public void removeContact(ContactType type) {
+        contacts.remove(type);
+    }
+
+    public Section getSection(SectionType sectionType) {
+        return sections.get(sectionType);
+    }
+
+    public void setSection(SectionType type, Section section) {
+        sections.put(type, section);
+    }
+
+    public void removeSection(SectionType type) {
+        sections.remove(type);
     }
 
     @Override
@@ -44,6 +78,22 @@ public class Resume {
 
     @Override
     public String toString() {
-        return uuid;
+        StringBuilder result = new StringBuilder(fullName + System.getProperty("line.separator"));
+
+        for (Map.Entry<ContactType, String> contact : contacts.entrySet()) {
+            result
+                    .append(contact.getKey().getTitle()).append(": ")
+                    .append(contact.getValue()).append(System.getProperty("line.separator"));
+        }
+
+        result.append(System.getProperty("line.separator"));
+
+        for (Map.Entry<SectionType, Section> section : sections.entrySet()) {
+            result
+                    .append(section.getKey().getTitle()).append(System.getProperty("line.separator"))
+                    .append(section.getValue()).append(System.getProperty("line.separator"));
+        }
+
+        return result.toString();
     }
 }
