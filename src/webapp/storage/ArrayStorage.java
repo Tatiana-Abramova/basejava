@@ -12,14 +12,14 @@ public class ArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected void deleteElement(Object searchKey, String uuid) {
-        storage[(Integer) searchKey] = storage[size - 1];
+    protected void deleteElement(Integer searchKey, String uuid) {
+        storage[searchKey] = storage[size - 1];
         storage[size - 1] = null;
         size--;
     }
 
     @Override
-    protected Object getSearchKey(String uuid) {
+    protected Integer getSearchKey(String uuid) {
         for (int i = 0; i < size; i++) {
             if (uuid.equals(storage[i].getUuid())) {
                 return i;

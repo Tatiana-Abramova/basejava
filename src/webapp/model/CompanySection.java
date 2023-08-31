@@ -23,4 +23,17 @@ public class CompanySection extends Section {
         }
         return result.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CompanySection that)) return false;
+
+        return getCompanies().equals(that.getCompanies());
+    }
+
+    @Override
+    public int hashCode() {
+        return getCompanies().hashCode();
+    }
 }

@@ -9,7 +9,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
     protected void addElement(Resume resume) {
-        Integer searchKey = (Integer) getSearchKey(resume.getUuid());
+        Integer searchKey = getSearchKey(resume.getUuid());
         int indexToSave = -searchKey - 1;
         System.arraycopy(storage, indexToSave, storage, indexToSave + 1, size - indexToSave);
         storage[indexToSave] = resume;
@@ -17,14 +17,14 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected void deleteElement(Object searchKey, String uuid) {
-        int index = (Integer) searchKey;
+    protected void deleteElement(Integer searchKey, String uuid) {
+        int index = searchKey;
         System.arraycopy(storage, index + 1, storage, index, size - index);
         size--;
     }
 
     @Override
-    protected Object getSearchKey(String uuid) {
+    protected Integer getSearchKey(String uuid) {
         Resume resume = Arrays
                 .stream(storage)
                 .limit(size)

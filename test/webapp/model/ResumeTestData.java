@@ -9,6 +9,17 @@ import static webapp.model.SectionType.*;
 public class ResumeTestData {
     public static void main(String[] args) {
         Resume resume = new Resume("uuid_1", "Григорий Кислин");
+        fillResume(resume);
+        System.out.println(resume);
+    }
+
+    public static Resume createResume(String uuid, String fullName) {
+        Resume resume = new Resume(uuid, fullName);
+        fillResume(resume);
+        return resume;
+    }
+
+    private static void fillResume(Resume resume) {
         resume.setContact(PHONE, "+7(921) 855-0482");
         resume.setContact(EMAIL, "gkislin@yandex.ru");
         resume.setContact(MESSENGERS, "skype:grigory.kislin");
@@ -45,24 +56,25 @@ public class ResumeTestData {
         CompanySection experience = new CompanySection();
         List<Company> companies = experience.getCompanies();
 
-        Company company1 = new Company("Java Online Projects", "http://javaops.ru/",
-                new Period(
-                        LocalDate.of(2013, 10, 1),
-                        "Автор проекта",
-                        "Создание, организация и проведение Java онлайн проектов и стажировок."));
+        Company company1 = new Company("Java Online Projects", "http://javaops.ru/");
+
+        company1.getPeriods().add(new Period(
+                LocalDate.of(2013, 10, 1),
+                "Автор проекта",
+                "Создание, организация и проведение Java онлайн проектов и стажировок."));
         companies.add(company1);
 
-        Company company2 = new Company("Wrike", "https://www.wrike.com/",
-                new Period(
-                        LocalDate.of(2014, 10, 1),
-                        LocalDate.of(2016, 1, 1),
-                        "Старший разработчик (backend)",
-                        "Проектирование и разработка онлайн платформы управления проектами " +
-                                "Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, " +
-                                "Redis). Двухфакторная аутентификация, авторизация по OAuth1, " +
-                                "OAuth2, JWT SSO."));
+        Company company2 = new Company("Wrike", "https://www.wrike.com/");
+        company2.getPeriods().add(new Period(
+                LocalDate.of(2014, 10, 1),
+                LocalDate.of(2016, 1, 1),
+                "Старший разработчик (backend)",
+                "Проектирование и разработка онлайн платформы управления проектами " +
+                        "Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, " +
+                        "Redis). Двухфакторная аутентификация, авторизация по OAuth1, " +
+                        "OAuth2, JWT SSO."));
         companies.add(company2);
+
         resume.setSection(EXPERIENCE, experience);
-        System.out.println(resume);
     }
 }

@@ -40,8 +40,8 @@ public abstract class AbstractStorage<SK> implements Storage {
     public final void save(Resume resume) {
         LOG.info("Save " + resume);
         if (resume != null) {
-            getNotExistingSearchKey(resume.getUuid());
-            saveElement(resume);
+            SK searchKey = getNotExistingSearchKey(resume.getUuid());
+            saveElement(searchKey, resume);
             System.out.println("Resume with uuid = " + resume.getUuid() + " has been saved to the storage");
         }
     }
@@ -93,7 +93,7 @@ public abstract class AbstractStorage<SK> implements Storage {
      * Saves a new resume to a specified position in the array
      * @param resume a new element to be saved
      */
-    protected abstract void saveElement(Resume resume);
+    protected abstract void saveElement(SK searchKey, Resume resume);
 
     /**
      * Updates element on a specified position

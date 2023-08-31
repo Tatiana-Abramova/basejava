@@ -21,4 +21,17 @@ public class ListSection extends Section {
         }
         return result.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ListSection that)) return false;
+
+        return getList().equals(that.getList());
+    }
+
+    @Override
+    public int hashCode() {
+        return getList().hashCode();
+    }
 }

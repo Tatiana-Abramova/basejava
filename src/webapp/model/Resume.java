@@ -2,13 +2,14 @@ package webapp.model;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static webapp.utils.Utils.getLn;
 
 /** Initial resume class */
-public class Resume {
+public class Resume implements Serializable {
 
     /** Unique identifier */
     private final String uuid;
