@@ -23,18 +23,16 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         this.directory = directory;
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Override
     public void clear() {
-        for (File file : directory.listFiles()) {
+        for (File file : getFiles()) {
             deleteElement(file, null);
         }
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Override
     public int size() {
-        return directory.list().length;
+        return getFiles().length;
     }
 
     @Override
@@ -47,19 +45,28 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         return file.exists();
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Override
     protected List<Resume> doGetAll() {
         List<Resume> resumes = new ArrayList<>();
-        for (File file : directory.listFiles()) {
-            resumes.add(readFile(file));
+        for (File file : getFiles()) {
+            resumes.add(getElement(file));
         }
         return resumes;
     }
 
     @Override
     protected Resume getElement(File searchKey) {
-        return readFile(searchKey);
+        Object result;
+        try (FileInputStream fis = new FileInputStream(searchKey);
+             ObjectInputStream ois = new ObjectInputStream(fis)) {
+            result = ois.readObject();
+            if (!(result instanceof Resume)) {
+                throw new StorageException("Wrong file content type", searchKey.getName());
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            throw new StorageException("IO error", searchKey.getName(), e);
+        }
+        return (Resume) result;
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -67,15 +74,19 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     protected void saveElement(File searchKey, Resume resume) {
         try {
             searchKey.createNewFile();
+            writeToFile(resume, searchKey);
         } catch (IOException e) {
-            throw new StorageException("IO error", searchKey.getName(), e);
+            throw new StorageException("Cannot create file. IO error", searchKey.getName(), e);
         }
-        writeToFile(resume, searchKey);
     }
 
     @Override
     protected void updateElement(File searchKey, Resume resume) {
-        writeToFile(resume, searchKey);
+        try {
+            writeToFile(resume, searchKey);
+        } catch (IOException e) {
+            throw new StorageException("Cannot update file. IO error", searchKey.getName(), e);
+        }
     }
 
     @Override
@@ -86,7 +97,13 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         }
     }
 
-    protected abstract void writeToFile(Resume resume, File file);
+    protected abstract void writeToFile(Resume resume, File file) throws IOException;
 
-    protected abstract Resume readFile(File file);
+    private File[] getFiles() {
+        File[] files = directory.listFiles();
+        if (files == null) {
+            throw new StorageException("Cannot read directory. IO error", null);
+        }
+        return files;
+    }
 }
