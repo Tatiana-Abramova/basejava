@@ -1,11 +1,9 @@
 package webapp.storage;
 
+import webapp.exception.StorageException;
 import webapp.model.Resume;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 
 /** Files based resume storage */
 public class FileStorage extends AbstractFileStorage {
@@ -24,5 +22,18 @@ public class FileStorage extends AbstractFileStorage {
              ObjectOutputStream oos = new ObjectOutputStream(fos)) {
             oos.writeObject(resume);
         }
+    }
+
+    @Override
+    protected Resume readFile(File file) throws IOException, ClassNotFoundException {
+        Object result;
+        try (FileInputStream fis = new FileInputStream(file);
+             ObjectInputStream ois = new ObjectInputStream(fis)) {
+            result = ois.readObject();
+            if (!(result instanceof Resume)) {
+                throw new StorageException("Wrong file content type", file.getName());
+            }
+        }
+        return (Resume) result;
     }
 }

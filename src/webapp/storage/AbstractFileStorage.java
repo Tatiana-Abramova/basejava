@@ -56,17 +56,11 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected Resume getElement(File searchKey) {
-        Object result;
-        try (FileInputStream fis = new FileInputStream(searchKey);
-             ObjectInputStream ois = new ObjectInputStream(fis)) {
-            result = ois.readObject();
-            if (!(result instanceof Resume)) {
-                throw new StorageException("Wrong file content type", searchKey.getName());
-            }
+        try {
+            return readFile(searchKey);
         } catch (IOException | ClassNotFoundException e) {
-            throw new StorageException("IO error", searchKey.getName(), e);
+            throw new StorageException("Cannot get file content. IO error", searchKey.getName(), e);
         }
-        return (Resume) result;
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -98,6 +92,8 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     }
 
     protected abstract void writeToFile(Resume resume, File file) throws IOException;
+
+    protected abstract Resume readFile(File file) throws IOException, ClassNotFoundException;
 
     private File[] getFiles() {
         File[] files = directory.listFiles();

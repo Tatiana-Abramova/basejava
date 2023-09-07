@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static webapp.utils.Utils.getLn;
+import static webapp.utils.Utils.getLineSeparator;
 
 /** Initial resume class */
 public class Resume implements Serializable {
@@ -81,20 +81,20 @@ public class Resume implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder(fullName + getLn());
+        StringBuilder result = new StringBuilder(fullName + getLineSeparator());
 
         for (Map.Entry<ContactType, String> contact : contacts.entrySet()) {
             result
                     .append(contact.getKey().getTitle()).append(": ")
-                    .append(contact.getValue()).append(getLn());
+                    .append(contact.getValue()).append(getLineSeparator());
         }
 
         result.append(System.getProperty("line.separator"));
 
         for (Map.Entry<SectionType, Section> section : sections.entrySet()) {
             result
-                    .append(section.getKey().getTitle()).append(getLn())
-                    .append(section.getValue()).append(getLn());
+                    .append(section.getKey().getTitle()).append(getLineSeparator())
+                    .append(section.getValue()).append(getLineSeparator());
         }
 
         return result.toString();

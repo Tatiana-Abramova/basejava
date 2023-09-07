@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-import static webapp.utils.Utils.getLn;
+import static webapp.utils.Utils.getLineSeparator;
 
 /** Experience or education record */
 public class Company  implements Serializable {
@@ -33,11 +33,11 @@ public class Company  implements Serializable {
     public String toString() {
         StringBuilder periodsStr = new StringBuilder();
         for (Period period : periods) {
-            periodsStr.append(period).append(getLn());
+            periodsStr.append(period).append(getLineSeparator());
         }
         return name + " "
-                + website + getLn()
-                + periodsStr + getLn();
+                + website + getLineSeparator()
+                + periodsStr + getLineSeparator();
     }
 
 

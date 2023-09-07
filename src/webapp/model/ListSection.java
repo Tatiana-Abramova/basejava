@@ -3,7 +3,7 @@ package webapp.model;
 import java.util.LinkedList;
 import java.util.List;
 
-import static webapp.utils.Utils.getLn;
+import static webapp.utils.Utils.getLineSeparator;
 
 /** List section */
 public class ListSection extends Section {
@@ -17,7 +17,7 @@ public class ListSection extends Section {
     public String toString() {
         StringBuilder result = new StringBuilder();
         for (String point : list) {
-            result.append("* ").append(point).append(getLn());
+            result.append("* ").append(point).append(getLineSeparator());
         }
         return result.toString();
     }

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import static webapp.utils.Utils.getLn;
+import static webapp.utils.Utils.getLineSeparator;
 
 /** Experience or education period */
 public class Period  implements Serializable {
@@ -50,8 +50,8 @@ public class Period  implements Serializable {
         String formattedDateTo = dateTo == null ? "Сейчас" : formatter.format(dateTo);
         return formattedDateFrom + " - "
                 + formattedDateTo + " "
-                + header + getLn()
-                + description + getLn();
+                + header + getLineSeparator()
+                + description + getLineSeparator();
     }
 
     @Override
