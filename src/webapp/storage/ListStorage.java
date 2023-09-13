@@ -57,7 +57,7 @@ public class ListStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected void deleteElement(Integer searchKey, String uuid) {
+    protected void deleteElement(Integer searchKey) {
         storage.remove((searchKey).intValue());
     }
 }

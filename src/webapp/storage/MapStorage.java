@@ -53,7 +53,7 @@ public class MapStorage extends AbstractStorage<Resume> {
     }
 
     @Override
-    protected void deleteElement(Resume searchKey, String uuid) {
-        storage.remove(uuid);
+    protected void deleteElement(Resume searchKey) {
+        storage.remove(searchKey.getUuid());
     }
 }

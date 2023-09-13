@@ -1,5 +1,6 @@
 package webapp.model;
 
+import java.io.Serial;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -7,6 +8,10 @@ import static webapp.utils.Utils.getLineSeparator;
 
 /** List section */
 public class ListSection extends Section {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     private final List<String> list = new LinkedList<>();
 
     public List<String> getList() {

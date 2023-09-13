@@ -1,5 +1,6 @@
 package webapp.model;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -8,6 +9,9 @@ import static webapp.utils.Utils.getLineSeparator;
 
 /** Experience or education period */
 public class Period  implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/yyyy");
     private LocalDate dateFrom;
     private LocalDate dateTo;

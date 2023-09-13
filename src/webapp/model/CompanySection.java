@@ -1,5 +1,6 @@
 package webapp.model;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +8,10 @@ import static webapp.utils.Utils.getLineSeparator;
 
 /** Section that contains experience or education records */
 public class CompanySection extends Section {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     private final List<Company> companies = new ArrayList<>();
 
     public List<Company> getCompanies() {

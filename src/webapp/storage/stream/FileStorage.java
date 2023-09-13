@@ -1,7 +1,8 @@
-package webapp.storage;
+package webapp.storage.stream;
 
 import webapp.exception.StorageException;
 import webapp.model.Resume;
+import webapp.storage.AbstractStorage;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -9,10 +10,11 @@ import java.util.List;
 import java.util.Objects;
 
 /** Files based resume storage */
-public abstract class AbstractFileStorage extends AbstractStorage<File> {
+public class FileStorage extends AbstractStorage<File> {
     private final File directory;
+    private final StreamWriter writer;
 
-    protected AbstractFileStorage(File directory) {
+    protected FileStorage(File directory, StreamWriter writer) {
         Objects.requireNonNull(directory, "directory must not be null");
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not directory");
@@ -21,12 +23,13 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not readable/writable");
         }
         this.directory = directory;
+        this.writer = writer;
     }
 
     @Override
     public void clear() {
         for (File file : getFiles()) {
-            deleteElement(file, null);
+            deleteElement(file);
         }
     }
 
@@ -57,8 +60,8 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected Resume getElement(File searchKey) {
         try {
-            return readFile(searchKey);
-        } catch (IOException | ClassNotFoundException e) {
+            return writer.readFile(new BufferedInputStream(new FileInputStream(searchKey)));
+        } catch (IOException e) {
             throw new StorageException("Cannot get file content. IO error", searchKey.getName(), e);
         }
     }
@@ -68,7 +71,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     protected void saveElement(File searchKey, Resume resume) {
         try {
             searchKey.createNewFile();
-            writeToFile(resume, searchKey);
+            writer.writeToFile(resume, new BufferedOutputStream(new FileOutputStream(searchKey)));
         } catch (IOException e) {
             throw new StorageException("Cannot create file. IO error", searchKey.getName(), e);
         }
@@ -77,23 +80,19 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected void updateElement(File searchKey, Resume resume) {
         try {
-            writeToFile(resume, searchKey);
+            writer.writeToFile(resume, new BufferedOutputStream(new FileOutputStream(searchKey)));
         } catch (IOException e) {
             throw new StorageException("Cannot update file. IO error", searchKey.getName(), e);
         }
     }
 
     @Override
-    protected void deleteElement(File searchKey, String uuid) {
+    protected void deleteElement(File searchKey) {
         boolean deleted = searchKey.delete();
         if (!deleted) {
             throw new StorageException("Cannot delete file", searchKey.getName());
         }
     }
-
-    protected abstract void writeToFile(Resume resume, File file) throws IOException;
-
-    protected abstract Resume readFile(File file) throws IOException, ClassNotFoundException;
 
     private File[] getFiles() {
         File[] files = directory.listFiles();

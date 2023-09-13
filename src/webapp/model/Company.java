@@ -1,5 +1,6 @@
 package webapp.model;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
@@ -8,6 +9,9 @@ import static webapp.utils.Utils.getLineSeparator;
 
 /** Experience or education record */
 public class Company  implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
     private String name;
     private String website;
     private final List<Period> periods = new LinkedList<>();

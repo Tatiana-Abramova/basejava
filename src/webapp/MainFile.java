@@ -32,17 +32,19 @@ public class MainFile {
         }
 
         dir = new File("./src");
-        listFiles(dir);
+        listFiles("", dir);
     }
 
-    public static void listFiles(File directory) {
+    public static void listFiles(String indent, File directory) {
         if (directory.isDirectory()) {
+            indent += "--";
             for (File file : Objects.requireNonNull(directory.listFiles())) {
+                System.out.print(indent);
                 if (file.isFile()) {
                     System.out.println(file.getName());
                 } else {
                     System.out.println("dir: " + file.getName());
-                    listFiles(file);
+                    listFiles(indent, file);
                 }
             }
         }

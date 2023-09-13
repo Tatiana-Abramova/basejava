@@ -58,7 +58,7 @@ public abstract class AbstractStorage<SK> implements Storage {
     public final void delete(String uuid) {
         LOG.info("Delete " + uuid);
         SK searchKey = getExistingSearchKey(uuid);
-        deleteElement(searchKey, uuid);
+        deleteElement(searchKey);
         System.out.println("Resume with uuid = " + uuid + " has been deleted from the storage");
     }
 
@@ -106,7 +106,7 @@ public abstract class AbstractStorage<SK> implements Storage {
      * Deletes element on a specified position
      * @param searchKey index of a deleted element
      */
-    protected abstract void deleteElement(SK searchKey, String uuid);
+    protected abstract void deleteElement(SK searchKey);
 
     private SK getExistingSearchKey(String uuid) {
         SK searchKey = getSearchKey(uuid);
