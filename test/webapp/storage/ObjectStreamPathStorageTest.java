@@ -1,11 +1,9 @@
 package webapp.storage;
 
-import webapp.storage.stream.FileStorageHandler;
-import webapp.storage.stream.ObjectStreamWriter;
-import webapp.storage.stream.StorageType;
+import webapp.serialization.ObjectStreamWriter;
 
 public class ObjectStreamPathStorageTest extends AbstractStorageTest {
     public ObjectStreamPathStorageTest() {
-        super(new FileStorageHandler(".\\resources", StorageType.PATH, new ObjectStreamWriter()).getStorage());
+        super(new PathStorage(".\\resources", new ObjectStreamWriter()));
     }
 }

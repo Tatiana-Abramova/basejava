@@ -1,8 +1,8 @@
-package webapp.storage.stream;
+package webapp.storage;
 
 import webapp.exception.StorageException;
 import webapp.model.Resume;
-import webapp.storage.AbstractStorage;
+import webapp.serialization.StreamWriter;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ public class FileStorage extends AbstractStorage<File> {
     private final File directory;
     private final StreamWriter writer;
 
-    protected FileStorage(File directory, StreamWriter writer) {
+    public FileStorage(File directory, StreamWriter writer) {
         Objects.requireNonNull(directory, "directory must not be null");
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not directory");
@@ -71,10 +71,10 @@ public class FileStorage extends AbstractStorage<File> {
     protected void saveElement(File searchKey, Resume resume) {
         try {
             searchKey.createNewFile();
-            writer.writeToFile(resume, new BufferedOutputStream(new FileOutputStream(searchKey)));
         } catch (IOException e) {
             throw new StorageException("Cannot create file. IO error", searchKey.getName(), e);
         }
+        updateElement(searchKey, resume);
     }
 
     @Override

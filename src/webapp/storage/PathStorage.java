@@ -1,8 +1,8 @@
-package webapp.storage.stream;
+package webapp.storage;
 
 import webapp.exception.StorageException;
 import webapp.model.Resume;
-import webapp.storage.AbstractStorage;
+import webapp.serialization.StreamWriter;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -17,7 +17,7 @@ public class PathStorage extends AbstractStorage<Path> {
     private final Path directory;
     private final StreamWriter writer;
 
-    protected PathStorage(String dir, StreamWriter writer) {
+    public PathStorage(String dir, StreamWriter writer) {
         this.directory = Paths.get(dir);
         this.writer = writer;
 
@@ -47,7 +47,7 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     protected Path getSearchKey(String uuid) {
-        return Paths.get(directory.toString(), uuid);
+        return directory.resolve(uuid);
     }
 
     @Override
@@ -79,10 +79,10 @@ public class PathStorage extends AbstractStorage<Path> {
     protected void saveElement(Path searchKey, Resume resume) {
         try {
             Files.createFile(searchKey);
-            writer.writeToFile(resume, new BufferedOutputStream(Files.newOutputStream(searchKey)));
         } catch (IOException e) {
             throw new StorageException("Cannot create file. IO error", searchKey.getFileName().toString(), e);
         }
+        updateElement(searchKey, resume);
     }
 
     @Override

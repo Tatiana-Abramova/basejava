@@ -1,4 +1,4 @@
-package webapp.storage.stream;
+package webapp.serialization;
 
 import webapp.model.Resume;
 
