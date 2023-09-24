@@ -12,7 +12,7 @@ public class CompanySection extends Section {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private final List<Company> companies = new ArrayList<>();
+    private List<Company> companies = new ArrayList<>();
 
     public List<Company> getCompanies() {
         return companies;

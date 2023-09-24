@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public interface StreamWriter {
+public interface StreamSerializer {
 
     void writeToFile(Resume resume, OutputStream os) throws IOException;
 

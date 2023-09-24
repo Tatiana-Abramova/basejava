@@ -1,9 +1,9 @@
 package webapp.storage;
 
-import webapp.serialization.ObjectStreamWriter;
+import webapp.serialization.ObjectStreamSerializer;
 
 public class ObjectStreamPathStorageTest extends AbstractStorageTest {
     public ObjectStreamPathStorageTest() {
-        super(new PathStorage(".\\resources", new ObjectStreamWriter()));
+        super(new PathStorage(STORAGE_DIR, new ObjectStreamSerializer()));
     }
 }

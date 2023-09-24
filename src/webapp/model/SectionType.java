@@ -17,4 +17,13 @@ public enum SectionType {
     public String getTitle() {
         return title;
     }
+
+    public static SectionType fromTitle(String text) {
+        for (SectionType sectionType : SectionType.values()) {
+            if (sectionType.title.equalsIgnoreCase(text)) {
+                return sectionType;
+            }
+        }
+        throw new IllegalArgumentException("Unknown value: " + text);
+    }
 }

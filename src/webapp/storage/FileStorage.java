@@ -2,7 +2,7 @@ package webapp.storage;
 
 import webapp.exception.StorageException;
 import webapp.model.Resume;
-import webapp.serialization.StreamWriter;
+import webapp.serialization.StreamSerializer;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -12,9 +12,9 @@ import java.util.Objects;
 /** Files based resume storage */
 public class FileStorage extends AbstractStorage<File> {
     private final File directory;
-    private final StreamWriter writer;
+    private final StreamSerializer writer;
 
-    public FileStorage(File directory, StreamWriter writer) {
+    public FileStorage(File directory, StreamSerializer writer) {
         Objects.requireNonNull(directory, "directory must not be null");
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not directory");

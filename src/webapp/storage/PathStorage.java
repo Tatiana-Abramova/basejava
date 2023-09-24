@@ -2,7 +2,7 @@ package webapp.storage;
 
 import webapp.exception.StorageException;
 import webapp.model.Resume;
-import webapp.serialization.StreamWriter;
+import webapp.serialization.StreamSerializer;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -15,9 +15,9 @@ import java.util.Objects;
 /** Paths based resume storage */
 public class PathStorage extends AbstractStorage<Path> {
     private final Path directory;
-    private final StreamWriter writer;
+    private final StreamSerializer writer;
 
-    public PathStorage(String dir, StreamWriter writer) {
+    public PathStorage(String dir, StreamSerializer writer) {
         this.directory = Paths.get(dir);
         this.writer = writer;
 

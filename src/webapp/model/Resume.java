@@ -1,5 +1,8 @@
 package webapp.model;
 
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serial;
@@ -10,22 +13,24 @@ import java.util.Map;
 import static webapp.utils.Utils.getLineSeparator;
 
 /** Initial resume class */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Resume implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     /** Unique identifier */
-    private final String uuid;
+    private String uuid;
 
     /** Full employee name */
     private String fullName;
 
     /** Employee contacts */
-    private final Map<ContactType, String> contacts = new LinkedHashMap<>();
+    private Map<ContactType, String> contacts = new LinkedHashMap<>();
 
     /** Resume sections */
-    private final Map<SectionType, Section> sections = new LinkedHashMap<>();
+    private Map<SectionType, Section> sections = new LinkedHashMap<>();
 
     public Resume(@NotNull String uuid, String fullName) {
         this.uuid = uuid;
@@ -66,6 +71,14 @@ public class Resume implements Serializable {
 
     public void removeSection(SectionType type) {
         sections.remove(type);
+    }
+
+    public Map<ContactType, String> getContacts() {
+        return contacts;
+    }
+
+    public Map<SectionType, Section> getSections() {
+        return sections;
     }
 
     @Override

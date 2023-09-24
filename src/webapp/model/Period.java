@@ -1,18 +1,27 @@
 package webapp.model;
 
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 import static webapp.utils.Utils.getLineSeparator;
 
 /** Experience or education period */
-public class Period  implements Serializable {
+@XmlAccessorType(XmlAccessType.FIELD)
+public class Period implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/yyyy");
+
+    private static final String PATTERN = "MM/yyyy";
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern(PATTERN);
+
+    private static final String NOW = "Сейчас";
     private LocalDate dateFrom;
     private LocalDate dateTo;
     private String header;
@@ -25,19 +34,24 @@ public class Period  implements Serializable {
         this.description = description;
     }
 
+    public Period(String dateFrom, String dateTo, String header, String description) {
+        this(getLocalDate(dateFrom), getLocalDate(dateTo), header, description);
+    }
+
     public Period(LocalDate dateFrom, String header, String description) {
-        this.dateFrom = dateFrom;
-        this.dateTo = null;
-        this.header = header;
-        this.description = description;
+        this(dateFrom, null, header, description);
     }
 
-    public LocalDate getDateFrom() {
-        return dateFrom;
+    public Period(String dateFrom, String header, String description) {
+        this(getLocalDate(dateFrom), header, description);
     }
 
-    public LocalDate getDateTo() {
-        return dateTo;
+    public String getDateFrom() {
+        return FORMATTER.format(dateFrom);
+    }
+
+    public String getDateTo() {
+        return dateTo == null ? NOW : FORMATTER.format(dateTo);
     }
 
     public String getHeader() {
@@ -50,8 +64,8 @@ public class Period  implements Serializable {
 
     @Override
     public String toString() {
-        String formattedDateFrom = formatter.format(dateFrom);
-        String formattedDateTo = dateTo == null ? "Сейчас" : formatter.format(dateTo);
+        String formattedDateFrom = FORMATTER.format(dateFrom);
+        String formattedDateTo = getDateTo();
         return formattedDateFrom + " - "
                 + formattedDateTo + " "
                 + header + getLineSeparator()
@@ -76,5 +90,11 @@ public class Period  implements Serializable {
         result = 31 * result + getHeader().hashCode();
         result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
         return result;
+    }
+
+    private static LocalDate getLocalDate(String date) {
+        String postfix = "/dd";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(PATTERN + postfix);
+        return Objects.equals(date, NOW) ? null : LocalDate.parse(date + "/01", formatter);
     }
 }
