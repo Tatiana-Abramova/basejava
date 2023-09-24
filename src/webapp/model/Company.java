@@ -12,7 +12,7 @@ import static webapp.utils.Utils.getLineSeparator;
 
 /** Experience or education record */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Company  implements Serializable {
+public class Company implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -23,6 +23,9 @@ public class Company  implements Serializable {
     public Company(String name, String website) {
         this.name = name;
         this.website = website;
+    }
+
+    public Company() {
     }
 
     public String getName() {
@@ -47,7 +50,6 @@ public class Company  implements Serializable {
                 + website + getLineSeparator()
                 + periodsStr + getLineSeparator();
     }
-
 
 
     @Override

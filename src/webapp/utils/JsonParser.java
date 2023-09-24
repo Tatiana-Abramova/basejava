@@ -1,6 +1,7 @@
 package webapp.utils;
 
 
+import com.fatboyindustrial.gsonjavatime.Converters;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import webapp.model.Section;
@@ -9,7 +10,8 @@ import java.io.Reader;
 import java.io.Writer;
 
 public class JsonParser {
-    private static Gson GSON = new GsonBuilder()
+    private static Gson GSON = Converters
+            .registerLocalDate(new GsonBuilder())
             .registerTypeAdapter(Section.class, new JsonSectionAdapter())
             .create();
 

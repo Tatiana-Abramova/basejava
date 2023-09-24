@@ -2,6 +2,8 @@ package webapp.model;
 
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import webapp.utils.LocalDateAdapter;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -22,7 +24,9 @@ public class Period implements Serializable {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern(PATTERN);
 
     private static final String NOW = "Сейчас";
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate dateFrom;
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate dateTo;
     private String header;
     private String description;
@@ -44,6 +48,9 @@ public class Period implements Serializable {
 
     public Period(String dateFrom, String header, String description) {
         this(getLocalDate(dateFrom), header, description);
+    }
+
+    public Period() {
     }
 
     public String getDateFrom() {
