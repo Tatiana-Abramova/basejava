@@ -17,14 +17,14 @@ public class DataStreamSerializer implements StreamSerializer {
 
             Map<ContactType, String> contacts = r.getContacts();
             dos.writeInt(contacts.size());
-            for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
+            forEachWithException(contacts.entrySet(), (entry) -> {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue());
-            }
+            });
 
             Map<SectionType, Section> sections = r.getSections();
             dos.writeInt(sections.size());
-            for (Map.Entry<SectionType, Section> entry : sections.entrySet()) {
+            forEachWithException(sections.entrySet(), (entry) -> {
                 SectionType type = entry.getKey();
                 dos.writeUTF(type.getTitle());
                 Section section = entry.getValue();
@@ -33,28 +33,26 @@ public class DataStreamSerializer implements StreamSerializer {
                     case ACHIEVEMENT, QUALIFICATIONS -> {
                         List<String> records = ((ListSection) section).getList();
                         dos.writeInt(records.size());
-                        for (String record : records) {
-                            dos.writeUTF(record);
-                        }
+                        forEachWithException(records, dos::writeUTF);
                     }
                     case EXPERIENCE, EDUCATION -> {
                         List<Company> companies = ((CompanySection) section).getCompanies();
                         dos.writeInt(companies.size());
-                        for (Company company : companies) {
+                        forEachWithException(companies, (company -> {
                             dos.writeUTF(company.getName());
                             dos.writeUTF(company.getWebsite());
                             List<Period> periods = company.getPeriods();
                             dos.writeInt(periods.size());
-                            for (Period period : periods) {
+                            forEachWithException(periods, (period -> {
                                 dos.writeUTF(period.getDateFrom());
                                 dos.writeUTF(period.getDateTo());
                                 dos.writeUTF(period.getHeader());
                                 dos.writeUTF(period.getDescription());
-                            }
-                        }
+                            }));
+                        }));
                     }
                 }
-            }
+            });
         }
     }
 
