@@ -2,9 +2,7 @@ package webapp.serialization;
 
 import webapp.model.Resume;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -14,10 +12,19 @@ public interface StreamSerializer {
 
     Resume readFile(InputStream is) throws IOException;
 
-    default <T> void forEachWithException(Collection<T> collection, ConsumerWithException<? super T> action) throws IOException {
+    default <T> void writeWithException(Collection<T> collection, DataOutputStream dos, ConsumerWithException<? super T> action) throws IOException {
         Objects.requireNonNull(action);
+        dos.writeInt(collection.size());
         for (T element : collection) {
             action.write(element);
+        }
+    }
+
+    default void readWithException(DataInputStream dis, ExecutorWithException action) throws IOException {
+        Objects.requireNonNull(action);
+        int size = dis.readInt();
+        for (int i = 0; i < size; i++) {
+            action.read();
         }
     }
 }
