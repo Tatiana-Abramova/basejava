@@ -84,22 +84,7 @@ public class Resume implements Serializable {
         return sections;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Resume resume = (Resume) o;
-
-        return uuid.equals(resume.uuid);
-    }
-
-    @Override
-    public int hashCode() {
-        return uuid.hashCode();
-    }
-
-    @Override
+        @Override
     public String toString() {
         StringBuilder result = new StringBuilder(fullName + getLineSeparator());
 
@@ -118,5 +103,25 @@ public class Resume implements Serializable {
         }
 
         return result.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Resume resume)) return false;
+
+        if (!getUuid().equals(resume.getUuid())) return false;
+        if (!getFullName().equals(resume.getFullName())) return false;
+        if (!getContacts().equals(resume.getContacts())) return false;
+        return getSections().equals(resume.getSections());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getUuid().hashCode();
+        result = 31 * result + getFullName().hashCode();
+        result = 31 * result + getContacts().hashCode();
+        result = 31 * result + getSections().hashCode();
+        return result;
     }
 }

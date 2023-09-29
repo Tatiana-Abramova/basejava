@@ -3,7 +3,6 @@ package webapp.serialization;
 import webapp.model.*;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -62,14 +61,13 @@ public class DataStreamSerializer implements StreamSerializer {
                 resume.setContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
             });
 
-            List<Section> sections = new ArrayList<>();
             readWithException(dis, () -> {
                 SectionType type = SectionType.fromTitle(dis.readUTF());
                 switch (type) {
-                    case PERSONAL, OBJECTIVE -> sections.add(new TextSection(dis.readUTF()));
+                    case PERSONAL, OBJECTIVE -> resume.setSection(type, new TextSection(dis.readUTF()));
                     case ACHIEVEMENT, QUALIFICATIONS -> {
                         ListSection section = new ListSection();
-                        sections.add(section);
+                        resume.setSection(type, section);
                         List<String> list = section.getList();
                         readWithException(dis, () -> {
                             list.add(dis.readUTF());
@@ -77,7 +75,7 @@ public class DataStreamSerializer implements StreamSerializer {
                     }
                     case EXPERIENCE, EDUCATION -> {
                         CompanySection section = new CompanySection();
-                        sections.add(section);
+                        resume.setSection(type, section);
                         List<Company> companies = section.getCompanies();
                         readWithException(dis, () -> {
                             Company company = new Company(dis.readUTF(), dis.readUTF());
