@@ -2,29 +2,27 @@ package webapp;
 
 public class MainDeadlock {
 
-    private final Object lock1 = new Object();
-    private final Object lock2 = new Object();
+    private static final Object LOCK_1 = new Object();
+    private static final Object LOCK_2 = new Object();
 
     public static void main(String[] args) {
-        MainDeadlock deadlock = new MainDeadlock();
-        Thread thread1 = new Thread(deadlock::print1);
-        Thread thread2 = new Thread(deadlock::print2);
-
-        thread1.start();
-        thread2.start();
+        lock(LOCK_1, LOCK_2).start();
+        lock(LOCK_2, LOCK_1).start();
     }
 
-    private void print1() {
-        synchronized (lock1) {
-            System.out.println(System.currentTimeMillis() + " print1 " + Thread.currentThread().getName());
-            print2();
-        }
-    }
-
-    private void print2() {
-        synchronized (lock2) {
-            System.out.println(System.currentTimeMillis() + " print2 " + Thread.currentThread().getName());
-            print1();
-        }
+    private static Thread lock(Object lock1, Object lock2) {
+        return new Thread(() -> {
+            synchronized (lock1) {
+                System.out.println(System.currentTimeMillis() + " print1 " + Thread.currentThread().getName());
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                synchronized (lock2) {
+                    System.out.println(System.currentTimeMillis() + " print2 " + Thread.currentThread().getName());
+                }
+            }
+        });
     }
 }
