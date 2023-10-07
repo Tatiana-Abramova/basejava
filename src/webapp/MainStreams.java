@@ -3,6 +3,7 @@ package webapp;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -11,6 +12,8 @@ public class MainStreams {
     public static void main(String[] args) {
         System.out.println(minValue(new int[]{2, 4, 3, 1, 3, 2}));
         System.out.println(oddOrEven(Arrays.asList(1, 3, 5, 3, 4)));
+        System.out.println(oddOrEven2(Arrays.asList(1, 3, 5, 3, 4)));
+
     }
 
     private static int minValue(int[] values) {
@@ -35,5 +38,14 @@ public class MainStreams {
                 .stream()
                 .filter((d) -> (sum % 2 != 0) == (d % 2 == 0))
                 .collect(Collectors.toList());
+    }
+
+    private static List<Integer> oddOrEven2(List<Integer> integers) {
+        Map<Boolean, List<Integer>> groups = integers
+                .stream()
+                .collect(Collectors.partitioningBy((d) -> d % 2 != 0));
+        return groups.get(true).size() % 2 != 0
+                ? groups.get(false)
+                : groups.get(true);
     }
 }
