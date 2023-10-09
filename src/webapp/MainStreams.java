@@ -1,10 +1,8 @@
 package webapp;
 
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class MainStreams {
@@ -17,17 +15,10 @@ public class MainStreams {
     }
 
     private static int minValue(int[] values) {
-        AtomicInteger result = new AtomicInteger(0);
-        AtomicInteger count = new AtomicInteger(1);
-        Arrays.stream(values)
-                .boxed()
+        return Arrays.stream(values)
                 .distinct()
-                .sorted(Comparator.reverseOrder())
-                .forEach((d) -> {
-                    result.set(d * count.get() + result.get());
-                    count.set(count.get() * 10);
-                });
-        return result.get();
+                .sorted()
+                .reduce(0, (a, b) -> a * 10 + b);
     }
 
     private static List<Integer> oddOrEven(List<Integer> integers) {
