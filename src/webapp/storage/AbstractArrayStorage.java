@@ -43,7 +43,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     @Override
     protected void saveElement(Integer searchKey, Resume resume) {
         if (size() >= STORAGE_LIMIT) {
-            throw new StorageException("The array overflow has occurred", resume.getUuid());
+            throw new StorageException("The array overflow has occurred", resume.getUuid(), null);
         }
         addElement(resume);
     }

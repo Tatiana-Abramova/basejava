@@ -2,6 +2,7 @@ package webapp.storage;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import webapp.Config;
 import webapp.exception.ExistStorageException;
 import webapp.exception.NotExistStorageException;
 import webapp.model.Resume;
@@ -11,11 +12,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 abstract class AbstractStorageTest {
 
-    protected static final String STORAGE_DIR = ".\\resources";
+    protected static final String STORAGE_DIR = Config.get().getStorageDir().getAbsolutePath();
 
     protected static final String UUID_1 = "uuid1";
     protected static final String UUID_2 = "uuid2";
@@ -56,6 +56,7 @@ abstract class AbstractStorageTest {
 
     @Test
     public void get() {
+        Resume r = storage.get(RESUME_1.getUuid());
         assertAll("get",
                 () -> assertGet(RESUME_1),
                 () -> assertGet(RESUME_2),
@@ -65,7 +66,7 @@ abstract class AbstractStorageTest {
 
     @Test
     public void getAllSorted() {
-        assertEquals(Arrays.asList(RESUME_1, RESUME_2, RESUME_3), storage.getAllSorted());
+        assertIterableEquals(Arrays.asList(RESUME_1, RESUME_2, RESUME_3), storage.getAllSorted());
     }
 
     @Test

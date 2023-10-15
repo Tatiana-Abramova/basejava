@@ -15,7 +15,7 @@ public class ResumeTestData {
 
     public static Resume createResume(String uuid, String fullName) {
         Resume resume = new Resume(uuid, fullName);
-        fillResume(resume);
+        //fillResume(resume);
         return resume;
     }
 

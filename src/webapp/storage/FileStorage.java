@@ -90,7 +90,7 @@ public class FileStorage extends AbstractStorage<File> {
     protected void deleteElement(File searchKey) {
         boolean deleted = searchKey.delete();
         if (!deleted) {
-            throw new StorageException("Cannot delete file", searchKey.getName());
+            throw new StorageException("Cannot delete file", searchKey.getName(), null);
         }
     }
 
