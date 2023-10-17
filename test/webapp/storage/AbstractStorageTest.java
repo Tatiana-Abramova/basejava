@@ -2,7 +2,7 @@ package webapp.storage;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import webapp.Config;
+import webapp.sql.Config;
 import webapp.exception.ExistStorageException;
 import webapp.exception.NotExistStorageException;
 import webapp.model.Resume;
@@ -10,6 +10,7 @@ import webapp.model.ResumeTestData;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,10 +18,10 @@ abstract class AbstractStorageTest {
 
     protected static final String STORAGE_DIR = Config.get().getStorageDir().getAbsolutePath();
 
-    protected static final String UUID_1 = "uuid1";
-    protected static final String UUID_2 = "uuid2";
-    protected static final String UUID_3 = "uuid3";
-    protected static final String UUID_4 = "uuid4";
+    protected static final String UUID_1 = UUID.randomUUID().toString();
+    protected static final String UUID_2 = UUID.randomUUID().toString();
+    protected static final String UUID_3 = UUID.randomUUID().toString();
+    protected static final String UUID_4 = UUID.randomUUID().toString();
 
     protected static final Resume RESUME_1;
     protected static final Resume RESUME_2;
@@ -101,7 +102,7 @@ abstract class AbstractStorageTest {
         storage.delete(UUID_1);
         assertAll("delete",
                 () -> assertSize(2),
-                () -> assertThrows(NotExistStorageException.class, () -> storage.get(UUID_1)));
+                () -> assertThrows(NotExistStorageException.class, () -> storage.delete(UUID_1)));
     }
 
     protected void assertSize(int expected) {

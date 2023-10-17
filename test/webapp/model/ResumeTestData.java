@@ -2,13 +2,14 @@ package webapp.model;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 import static webapp.model.ContactType.*;
 import static webapp.model.SectionType.*;
 
 public class ResumeTestData {
     public static void main(String[] args) {
-        Resume resume = new Resume("uuid_1", "Григорий Кислин");
+        Resume resume = new Resume(UUID.randomUUID().toString(), "Григорий Кислин");
         fillResume(resume);
         System.out.println(resume);
     }

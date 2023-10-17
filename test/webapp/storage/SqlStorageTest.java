@@ -1,10 +1,10 @@
 package webapp.storage;
 
-import webapp.Config;
+import webapp.sql.Config;
 
 public class SqlStorageTest extends AbstractStorageTest{
 
     public SqlStorageTest() {
-        super(new SqlStorage(Config.get().getDbUrl(), Config.get().getDbUser(), Config.get().getDbPassword()));
+        super(Config.get().getStorage());
     }
 }
