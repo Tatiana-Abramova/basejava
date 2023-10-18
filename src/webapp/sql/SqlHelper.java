@@ -1,6 +1,5 @@
 package webapp.sql;
 
-import webapp.exception.ExistStorageException;
 import webapp.exception.StorageException;
 
 import java.sql.Connection;
@@ -19,14 +18,27 @@ public class SqlHelper {
              PreparedStatement ps = conn.prepareStatement(query)) {
             return func.apply(ps);
         } catch (SQLException e) {
-            if (e.getSQLState().equals("23505")) {
-                throw new ExistStorageException(uuid);
-            }
-            throw new StorageException(e);
+            throw ExceptionUtil.convertException(e);
         }
     }
 
     public <T> T executeQuery(String query, FunctionWithException<PreparedStatement, T> func) {
         return executeQuery(null, query, func);
+    }
+
+    public <T> T transactionalExecute(String uuid, SqlTransaction<T> executor) {
+        try (Connection conn = connectionFactory.getConnection()) {
+            try {
+                conn.setAutoCommit(false);
+                T res = executor.execute(conn);
+                conn.commit();
+                return res;
+            } catch (SQLException e) {
+                conn.rollback();
+                throw ExceptionUtil.convertException(e);
+            }
+        } catch (SQLException e) {
+            throw new StorageException(e);
+        }
     }
 }
