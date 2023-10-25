@@ -13,7 +13,7 @@ public class SqlHelper {
         this.connectionFactory = connectionFactory;
     }
 
-    public <T> T executeQuery(String uuid, String query, FunctionWithException<PreparedStatement, T> func) {
+    public <T> T executeQuery(String uuid, String query, SqlExecutor<PreparedStatement, T> func) {
         try (Connection conn = connectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
             return func.apply(ps);
@@ -22,7 +22,7 @@ public class SqlHelper {
         }
     }
 
-    public <T> T executeQuery(String query, FunctionWithException<PreparedStatement, T> func) {
+    public <T> T executeQuery(String query, SqlExecutor<PreparedStatement, T> func) {
         return executeQuery(null, query, func);
     }
 

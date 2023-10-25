@@ -1,8 +1,10 @@
 package webapp.model;
 
+import java.util.List;
 import java.util.UUID;
 
 import static webapp.model.ContactType.*;
+import static webapp.model.SectionType.*;
 
 public class ResumeTestData {
     public static void main(String[] args) {
@@ -26,7 +28,7 @@ public class ResumeTestData {
         resume.setContact(STACKOVERFLOW, "https://stackoverflow.com/users/548473");
         resume.setContact(HOME_PAGE, "http://gkislin.ru/");
 
-        /*Section position = new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям");
+        Section position = new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям");
         resume.setSection(OBJECTIVE, position);
 
         Section personal = new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры.");
@@ -50,7 +52,7 @@ public class ResumeTestData {
         qualificationList.add("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2");
         qualificationList.add("Version control: Subversion, Git, Mercury, ClearCase, Perforce");
         resume.setSection(QUALIFICATIONS, qualifications);
-
+/*
         CompanySection experience = new CompanySection();
         List<Company> companies = experience.getCompanies();
 

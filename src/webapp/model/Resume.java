@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.LinkedHashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 import static webapp.utils.Utils.getLineSeparator;
@@ -27,10 +27,10 @@ public class Resume implements Serializable {
     private String fullName;
 
     /** Employee contacts */
-    private Map<ContactType, String> contacts = new LinkedHashMap<>();
+    private Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
 
     /** Resume sections */
-    private Map<SectionType, Section> sections = new LinkedHashMap<>();
+    private Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);
 
     public Resume(@NotNull String uuid, String fullName) {
         this.uuid = uuid;
@@ -87,7 +87,6 @@ public class Resume implements Serializable {
         @Override
     public String toString() {
         StringBuilder result = new StringBuilder(fullName + getLineSeparator());
-
         for (Map.Entry<ContactType, String> contact : contacts.entrySet()) {
             result
                     .append(contact.getKey().getTitle()).append(": ")
@@ -99,7 +98,7 @@ public class Resume implements Serializable {
         for (Map.Entry<SectionType, Section> section : sections.entrySet()) {
             result
                     .append(section.getKey().getTitle()).append(getLineSeparator())
-                    .append(section.getValue()).append(getLineSeparator());
+                    .append(section.getValue()).append(getLineSeparator()).append(getLineSeparator());
         }
 
         return result.toString();
