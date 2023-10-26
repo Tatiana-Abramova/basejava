@@ -1,6 +1,8 @@
 package webapp.web;
 
 
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -11,6 +13,14 @@ import webapp.storage.Storage;
 import java.io.IOException;
 
 public class ResumeServlet extends HttpServlet {
+
+
+    private Storage storage;
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        storage = Config.get().getStorage();
+    }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
 
     }
