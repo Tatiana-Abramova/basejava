@@ -14,6 +14,14 @@ public class ListSection extends Section {
 
     private List<String> list = new LinkedList<>();
 
+    public ListSection() {
+
+    }
+
+    public ListSection(List<String> list) {
+        this.list = list;
+    }
+
     public List<String> getList() {
         return list;
     }
