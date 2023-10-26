@@ -7,11 +7,11 @@ import webapp.sql.ConnectionFactory;
 import webapp.sql.SqlHelper;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static webapp.storage.AbstractStorage.RESUME_COMPARATOR;
 import static webapp.utils.Utils.getLineSeparator;
 
 public class SqlStorage implements Storage {
@@ -37,12 +37,12 @@ public class SqlStorage implements Storage {
     public Resume get(String uuid) {
         return helper.executeQuery("""
                         SELECT
-                                r.uuid
-                                , r.full_name
-                                , c.type as "contact_type"
-                                , c.value as "contact_value"
-                                , s.type as "section_type"
-                                , s.value as "section_value"
+                                r.uuid,
+                                r.full_name,
+                                c.type as "contact_type",
+                                c.value as "contact_value",
+                                s.type as "section_type",
+                                s.value as "section_value"
                             FROM resume r
                         LEFT JOIN contact c
                             ON r.uuid = c.resume_uuid
@@ -157,7 +157,7 @@ public class SqlStorage implements Storage {
                     }
                     fillContacts(conn, resumes);
                     fillSections(conn, resumes);
-                    return resumes.values().stream().sorted(RESUME_COMPARATOR).toList();
+                    return new ArrayList<>(resumes.values());
                 }
         );
     }
