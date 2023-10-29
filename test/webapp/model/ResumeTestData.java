@@ -21,8 +21,8 @@ public class ResumeTestData {
 
     private static void fillResume(Resume resume) {
         resume.setContact(PHONE, "+7(921) 855-0482");
-        resume.setContact(EMAIL, "gkislin@yandex.ru");
-        resume.setContact(MESSENGERS, "skype:grigory.kislin");
+        resume.setContact(MAIL, "gkislin@yandex.ru");
+        resume.setContact(SKYPE, "skype:grigory.kislin");
         resume.setContact(LINKEDIN, "https://www.linkedin.com/in/gkislin");
         resume.setContact(GITHUB, "https://github.com/gkislin");
         resume.setContact(STACKOVERFLOW, "https://stackoverflow.com/users/548473");

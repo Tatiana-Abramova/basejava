@@ -2,8 +2,6 @@ package webapp.model;
 
 import java.io.Serial;
 
-import static webapp.utils.Utils.getLineSeparator;
-
 /** Text section */
 public class TextSection extends Section {
 
@@ -25,7 +23,7 @@ public class TextSection extends Section {
 
     @Override
     public String toString() {
-        return text + getLineSeparator();
+        return text;
     }
 
 

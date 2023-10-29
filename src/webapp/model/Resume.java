@@ -93,7 +93,7 @@ public class Resume implements Serializable {
                     .append(contact.getValue()).append(getLineSeparator());
         }
 
-        result.append(System.getProperty("line.separator"));
+        result.append(getLineSeparator());
 
         for (Map.Entry<SectionType, Section> section : sections.entrySet()) {
             result

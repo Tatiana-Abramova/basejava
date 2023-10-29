@@ -28,11 +28,7 @@ public class ListSection extends Section {
 
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder();
-        for (String point : list) {
-            result.append("* ").append(point).append(getLineSeparator());
-        }
-        return result.toString();
+        return String.join(getLineSeparator(), list);
     }
 
     @Override
