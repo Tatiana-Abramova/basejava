@@ -17,6 +17,8 @@ import static webapp.utils.Utils.getLineSeparator;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Period implements Serializable {
 
+    public static Period EMPTY = new Period();
+
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -54,11 +56,11 @@ public class Period implements Serializable {
     }
 
     public String getDateFrom() {
-        return FORMATTER.format(dateFrom);
+        return dateFrom == null ? "" : FORMATTER.format(dateFrom);
     }
 
     public String getDateTo() {
-        return dateTo == null ? NOW : FORMATTER.format(dateTo);
+        return dateTo == null ? "" : FORMATTER.format(dateTo);
     }
 
     public String getHeader() {

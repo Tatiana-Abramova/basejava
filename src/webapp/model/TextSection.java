@@ -5,6 +5,8 @@ import java.io.Serial;
 /** Text section */
 public class TextSection extends Section {
 
+    public static TextSection EMPTY = new TextSection("");
+
     @Serial
     private static final long serialVersionUID = 1L;
 

@@ -12,12 +12,11 @@ import webapp.sql.Config;
 import webapp.storage.Storage;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
 import static webapp.utils.Utils.getLineSeparator;
+import static webapp.utils.Utils.notEmpty;
 
 public class ResumeServlet extends HttpServlet {
 
@@ -66,11 +65,41 @@ public class ResumeServlet extends HttpServlet {
                 response.sendRedirect("resume");
                 return;
             case "view":
+                r = storage.get(uuid);
+                break;
             case "edit":
                 if (uuid != null) {
                     r = storage.get(uuid);
                 } else {
                     r = new Resume();
+                }
+                for (SectionType type : SectionType.values()) {
+                    switch (type) {
+                        case PERSONAL, OBJECTIVE -> {
+                            if (r.getSection(type) == null) {
+                                r.setSection(type, TextSection.EMPTY);
+                            }
+                        }
+                        case ACHIEVEMENT, QUALIFICATIONS -> {
+                            if (r.getSection(type) == null) {
+                                r.setSection(type, ListSection.EMPTY);
+                            }
+                        }
+                        case EXPERIENCE, EDUCATION -> {
+                            if (r.getSection(type) == null) {
+                                CompanySection section = new CompanySection();
+                                Company empty = Company.EMPTY;
+                                section.getCompanies().add(empty);
+                                r.setSection(type, section);
+                            } else {
+                                List<Company> companies = ((CompanySection) r.getSection(type)).getCompanies();
+                                for (Company company : companies) {
+                                    company.getPeriods().add(Period.EMPTY);
+                                }
+                                companies.add(Company.EMPTY);
+                            }
+                        }
+                    }
                 }
                 break;
             default:
@@ -85,7 +114,7 @@ public class ResumeServlet extends HttpServlet {
     private void updateResume(Resume r, HttpServletRequest request) {
         for (ContactType type : ContactType.values()) {
             String value = request.getParameter(type.name());
-            if (value != null && value.trim().length() != 0) {
+            if (notEmpty(value)) {
                 r.setContact(type, value);
             } else {
                 r.getContacts().remove(type);
@@ -97,14 +126,29 @@ public class ResumeServlet extends HttpServlet {
             switch (type) {
                 case PERSONAL, OBJECTIVE -> section = new TextSection(value);
                 case ACHIEVEMENT, QUALIFICATIONS -> {
-                    List<String> list = new ArrayList<>(List.of(value.split(getLineSeparator())));
-                    list.removeAll(Arrays.asList("", null));
+                    List<String> list = List.of(value.replaceAll("(" + getLineSeparator() + "\s*)+", getLineSeparator()).split(getLineSeparator()));
                     section = new ListSection(list);
                 }
                 case EXPERIENCE, EDUCATION -> {
+                    section = new CompanySection();
+                    String typeName = type.name();
+                    int counter = 0; // TODO сохранение нескольких периодов
+                    while (notEmpty(request.getParameter(typeName + counter + "header"))) {
+                        Company company = new Company(
+                                value,
+                                request.getParameter(typeName + "url"));
+                        Period period = new Period(
+                                request.getParameter(typeName + counter + "dateFrom"),
+                                request.getParameter(typeName + counter + "dateTo"),
+                                request.getParameter(typeName + counter + "header"),
+                                request.getParameter(typeName + counter + "description"));
+                        company.getPeriods().add(period);
+                        counter++;
+                        ((CompanySection) section).getCompanies().add(company);
+                    }
                 }
             }
-            if (value != null && value.trim().length() != 0) {
+            if (notEmpty(value)) {
                 r.setSection(type, section);
             } else {
                 r.getSections().remove(type);

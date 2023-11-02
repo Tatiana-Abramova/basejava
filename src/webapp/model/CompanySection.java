@@ -14,6 +14,9 @@ public class CompanySection extends Section {
 
     private List<Company> companies = new ArrayList<>();
 
+    public CompanySection() {
+    }
+
     public List<Company> getCompanies() {
         return companies;
     }

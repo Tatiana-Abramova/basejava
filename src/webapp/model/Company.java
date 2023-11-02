@@ -20,9 +20,16 @@ public class Company implements Serializable {
     private String website;
     private List<Period> periods = new LinkedList<>();
 
+    public static Company EMPTY = new Company("", "", List.of(Period.EMPTY));
+
     public Company(String name, String website) {
         this.name = name;
         this.website = website;
+    }
+
+    public Company(String name, String website, List<Period> periods) {
+        this(name, website);
+        this.periods = periods;
     }
 
     public Company() {

@@ -5,6 +5,7 @@ import webapp.exception.StorageException;
 import webapp.model.*;
 import webapp.sql.ConnectionFactory;
 import webapp.sql.SqlHelper;
+import webapp.utils.JsonParser;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -240,6 +241,7 @@ public class SqlStorage implements Storage {
                     section = new ListSection(List.of(value.split(getLineSeparator())));
                 }
                 case EXPERIENCE, EDUCATION -> {
+                    section = JsonParser.read(value, Section.class); // TODO везде переделать через парсер
                 }
             }
             resume.setSection(SectionType.valueOf(type), section);
@@ -273,6 +275,7 @@ public class SqlStorage implements Storage {
                         ps.setString(3, values);
                     }
                     case EXPERIENCE, EDUCATION -> {
+                        ps.setString(3, JsonParser.write(section, Section.class));
                     }
                 }
                 ps.addBatch();

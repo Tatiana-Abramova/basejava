@@ -1,5 +1,11 @@
 <%@ page import="webapp.model.ContactType" %>
 <%@ page import="webapp.model.SectionType" %>
+<%@ page import="webapp.model.Section" %>
+<%@ page import="webapp.model.ListSection" %>
+<%@ page import="webapp.model.TextSection" %>
+<%@ page import="webapp.model.CompanySection" %>
+<%@ page import="webapp.model.Company" %>
+<%@ page import="webapp.model.Period" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -14,7 +20,7 @@
 <jsp:include page="fragments/header.jsp"/>
 <section>
     <form method="post" action="resume" onsubmit="return verify()" enctype="application/x-www-form-urlencoded">
-        <input type="hidden" name="uuid" value="${resume.uuid}">
+        <input type="hidden" name="uuid" value="${resume.uuid}" required>
         <dl>
             <dt>Имя:</dt>
             <dd><input type="text" id="fullName" name="fullName" size=50 value="${resume.fullName}"></dd>
@@ -26,14 +32,66 @@
                 <dd><input type="text" name="${type.name()}" size=30 value="${resume.getContact(type)}"></dd>
             </dl>
         </c:forEach>
-        <h3>Секции:</h3>
-                <c:forEach var="type" items="<%=SectionType.values()%>">
-                    <dl>
-                        <dt>${type.title}</dt>
-                        <textarea name="${type.name()}" cols="40" rows="5">${resume.getSection(type)}</textarea>
-
-                    </dl>
-                </c:forEach>
+        <c:forEach var="type" items="<%=SectionType.values()%>">
+            <c:set var="section" value="${resume.getSection(type)}"/>
+            <jsp:useBean id="section" type="webapp.model.Section"/>
+            <h2><a>${type.title}</a></h2>
+            <c:choose>
+                <c:when test="${type=='OBJECTIVE'}">
+                    <input type='text' name='${type}' size=75 value='<%=section%>'>
+                </c:when>
+                <c:when test="${type=='PERSONAL'}">
+                    <textarea name='${type}' cols=75 rows=5><%=section%></textarea>
+                </c:when>
+                <c:when test="${type=='QUALIFICATIONS' || type=='ACHIEVEMENT'}">
+                    <textarea name='${type}' cols=75
+                              rows=5><%=String.join("\n", ((ListSection) section).getList())%></textarea>
+                </c:when>
+                <c:when test="${type=='EXPERIENCE' || type=='EDUCATION'}">
+                    <c:forEach var="org" items="<%=((CompanySection) section).getCompanies()%>"
+                               varStatus="counter">
+                        <dl>
+                            <dt>Название учереждения:</dt>
+                            <dd><input type="text" name='${type}' size=100 value="${org.name}"></dd>
+                        </dl>
+                        <dl>
+                            <dt>Сайт учереждения:</dt>
+                            <dd><input type="text" name='${type}url' size=100 value="${org.website}"></dd>
+                            </dd>
+                        </dl>
+                        <br>
+                        <div style="margin-left: 30px">
+                            <c:forEach var="pos" items="${org.periods}">
+                                <jsp:useBean id="pos" type="webapp.model.Period"/>
+                                <dl>
+                                    <dt>Начальная дата:</dt>
+                                    <dd>
+                                        <input type="text" name="${type}${counter.index}dateFrom" size=10
+                                               value="<%=pos.getDateFrom()%>" placeholder="MM/yyyy">
+                                    </dd>
+                                </dl>
+                                <dl>
+                                    <dt>Конечная дата:</dt>
+                                    <dd>
+                                        <input type="text" name="${type}${counter.index}dateTo" size=10
+                                               value="<%=pos.getDateTo()%>" placeholder="MM/yyyy">
+                                </dl>
+                                <dl>
+                                    <dt>Должность:</dt>
+                                    <dd><input type="text" name='${type}${counter.index}header' size=75
+                                               value="${pos.header}">
+                                </dl>
+                                <dl>
+                                    <dt>Описание:</dt>
+                                    <dd><textarea name="${type}${counter.index}description" rows=5
+                                                  cols=75>${pos.description}</textarea></dd>
+                                </dl>
+                            </c:forEach>
+                        </div>
+                    </c:forEach>
+                </c:when>
+            </c:choose>
+        </c:forEach>
         <hr>
         <input type="submit" value="Сохранить"></button>
         <button onclick="window.history.back()">Отменить</button>

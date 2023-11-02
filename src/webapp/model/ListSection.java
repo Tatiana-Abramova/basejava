@@ -9,6 +9,8 @@ import static webapp.utils.Utils.getLineSeparator;
 /** List section */
 public class ListSection extends Section {
 
+    public static ListSection EMPTY = new ListSection(List.of(""));
+
     @Serial
     private static final long serialVersionUID = 1L;
 
