@@ -1,5 +1,7 @@
 package webapp.storage;
 
+import webapp.storage.AbstractArrayStorage;
+import webapp.storage.Storage;
 import org.junit.jupiter.api.Test;
 import webapp.exception.StorageException;
 import webapp.model.Resume;

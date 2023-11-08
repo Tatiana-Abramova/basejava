@@ -1,5 +1,6 @@
 package webapp.storage;
 
+import webapp.storage.Storage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import webapp.sql.Config;

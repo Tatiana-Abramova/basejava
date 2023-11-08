@@ -1,6 +1,7 @@
 package webapp.serialization;
 
 import webapp.model.*;
+import webapp.model.*;
 import webapp.utils.XmlParser;
 
 import java.io.*;

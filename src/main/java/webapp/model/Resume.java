@@ -1,16 +1,15 @@
 package webapp.model;
 
+import com.sun.istack.NotNull;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlRootElement;
-import org.jetbrains.annotations.NotNull;
+import webapp.utils.Utils;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import static webapp.utils.Utils.getLineSeparator;
 
 /** Initial resume class */
 @XmlRootElement
@@ -86,19 +85,19 @@ public class Resume implements Serializable {
 
         @Override
     public String toString() {
-        StringBuilder result = new StringBuilder(fullName + getLineSeparator());
+        StringBuilder result = new StringBuilder(fullName + Utils.getLineSeparator());
         for (Map.Entry<ContactType, String> contact : contacts.entrySet()) {
             result
                     .append(contact.getKey().getTitle()).append(": ")
-                    .append(contact.getValue()).append(getLineSeparator());
+                    .append(contact.getValue()).append(Utils.getLineSeparator());
         }
 
-        result.append(getLineSeparator());
+        result.append(Utils.getLineSeparator());
 
         for (Map.Entry<SectionType, Section> section : sections.entrySet()) {
             result
-                    .append(section.getKey().getTitle()).append(getLineSeparator())
-                    .append(section.getValue()).append(getLineSeparator()).append(getLineSeparator());
+                    .append(section.getKey().getTitle()).append(Utils.getLineSeparator())
+                    .append(section.getValue()).append(Utils.getLineSeparator()).append(Utils.getLineSeparator());
         }
 
         return result.toString();

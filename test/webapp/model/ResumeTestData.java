@@ -1,5 +1,10 @@
 package webapp.model;
 
+import webapp.model.ListSection;
+import webapp.model.Resume;
+import webapp.model.Section;
+import webapp.model.TextSection;
+
 import java.util.List;
 import java.util.UUID;
 

@@ -3,6 +3,7 @@ package webapp.web;
 
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -10,17 +11,19 @@ import webapp.exception.StorageException;
 import webapp.model.*;
 import webapp.sql.Config;
 import webapp.storage.Storage;
+import webapp.utils.Utils;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
-import static webapp.utils.Utils.getLineSeparator;
-import static webapp.utils.Utils.notEmpty;
-
+@WebServlet(
+        name = "resumeServlet",
+        urlPatterns = "/resume"
+)
 public class ResumeServlet extends HttpServlet {
 
-    private Storage storage; // = Config.get().getStorage();
+    private Storage storage;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -114,7 +117,7 @@ public class ResumeServlet extends HttpServlet {
     private void updateResume(Resume r, HttpServletRequest request) {
         for (ContactType type : ContactType.values()) {
             String value = request.getParameter(type.name());
-            if (notEmpty(value)) {
+            if (Utils.notEmpty(value)) {
                 r.setContact(type, value);
             } else {
                 r.getContacts().remove(type);
@@ -126,14 +129,14 @@ public class ResumeServlet extends HttpServlet {
             switch (type) {
                 case PERSONAL, OBJECTIVE -> section = new TextSection(value);
                 case ACHIEVEMENT, QUALIFICATIONS -> {
-                    List<String> list = List.of(value.replaceAll("(" + getLineSeparator() + "\s*)+", getLineSeparator()).split(getLineSeparator()));
+                    List<String> list = List.of(value.replaceAll("(" + Utils.getLineSeparator() + "\s*)+", Utils.getLineSeparator()).split(Utils.getLineSeparator()));
                     section = new ListSection(list);
                 }
                 case EXPERIENCE, EDUCATION -> {
                     section = new CompanySection();
                     String typeName = type.name();
                     int counter = 0; // TODO сохранение нескольких периодов
-                    while (notEmpty(request.getParameter(typeName + counter + "header"))) {
+                    while (Utils.notEmpty(request.getParameter(typeName + counter + "header"))) {
                         Company company = new Company(
                                 value,
                                 request.getParameter(typeName + "url"));
@@ -148,7 +151,7 @@ public class ResumeServlet extends HttpServlet {
                     }
                 }
             }
-            if (notEmpty(value)) {
+            if (Utils.notEmpty(value)) {
                 r.setSection(type, section);
             } else {
                 r.getSections().remove(type);

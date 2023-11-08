@@ -1,6 +1,6 @@
 package webapp.model;
 
-import static webapp.utils.Utils.getLineSeparator;
+import webapp.utils.Utils;
 
 public enum SectionType {
     PERSONAL("Личные качества"),
@@ -42,9 +42,9 @@ public enum SectionType {
     protected String toHtmlList(Section section) {
         StringBuilder builder = new StringBuilder();
         for (String value : ((ListSection) section).getList()) {
-            builder.append("* ").append(value).append(getLineSeparator());
+            builder.append("* ").append(value).append(Utils.getLineSeparator());
         }
-        return getTitleHtml() + getLineSeparator() + builder;
+        return getTitleHtml() + Utils.getLineSeparator() + builder;
     }
 
     private String getTitleHtml() {
@@ -52,7 +52,7 @@ public enum SectionType {
     }
 
     protected String toHtml0(Section section) {
-        return getTitleHtml() + getLineSeparator() + section.toString();
+        return getTitleHtml() + Utils.getLineSeparator() + section.toString();
     }
 
     public String toHtml(Section section) {

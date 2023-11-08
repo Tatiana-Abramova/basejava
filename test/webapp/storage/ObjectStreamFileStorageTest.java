@@ -1,6 +1,7 @@
 package webapp.storage;
 
 import webapp.serialization.ObjectStreamSerializer;
+import webapp.storage.FileStorage;
 
 import java.io.File;
 

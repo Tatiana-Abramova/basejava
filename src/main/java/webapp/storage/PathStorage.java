@@ -1,8 +1,8 @@
 package webapp.storage;
 
 import webapp.exception.StorageException;
-import webapp.model.Resume;
 import webapp.serialization.StreamSerializer;
+import webapp.model.Resume;
 
 import java.io.*;
 import java.nio.file.Files;
